@@ -7,7 +7,7 @@ import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai"
 export default function Header() {
     return (
         <>
-            <div id="Header" className="border-b text-[12px] text-[#333333] py-2 px-5">
+            <div id="Header" className="fixed w-full top-0 border-b bg-white text-[12px] text-[#333333] py-2 px-5 z-40">
 
                 <div className="w-full flex items-center justify-between mx-auto">
                     <div
@@ -36,12 +36,12 @@ export default function Header() {
                         className="flex items-center px-2 h-8"
                     >
                         <li className="px-3 hover:underline cursor-pointer">
-                            <div className="relative">
+                            <Link href={"/cart"} className="relative">
                                 <AiOutlineShoppingCart size={22} />
                                 <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
                                     <div className="flex items-center justify-center -mt-[1px]">2</div>
                                 </div>
-                            </div>
+                            </Link>
                         </li>
 
                         <li className="relative px-3">
@@ -73,7 +73,7 @@ export default function Header() {
                         </li>
                     </ul>
                 </div>
-                
+
             </div>
         </>
     )

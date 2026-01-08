@@ -1,21 +1,29 @@
 "use client"
 
+import { useParams } from "next/navigation";
+import products from "@/db/products-db";
 import DisplayProducts from "@/app/components/DisplayProducts";
 import MainLayout from "../../layouts/MainLayout"
 
-export default function Product({ params }) {
+export default function Product() {
 
-    const product = {
-        id: 1,
-        title: "Brown Bag",
-        description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-        img_url: "https://picsum.photos/id/1",
-        price: 1500 
+    const { id } = useParams();
+
+    const product = products.find(
+        (item) => item.id === Number(id)
+    );
+
+    if (!product) {
+        return (
+            <MainLayout>
+                <p className="p-4">Product not found.</p>
+            </MainLayout>
+        );
     }
 
     return (
         <MainLayout>
-            <div className="flex px-4 py-10">
+            <div className="flex px-4 py-10 mt-10">
 
                 {product?.img_url ?
                     <img className="w-[40%] rounded-lg" src={product.img_url+'/280'} /> 
@@ -39,13 +47,20 @@ export default function Product({ params }) {
 
                     <div className="pt-3">
                         <div className="w-full flex items-center justify-between">
-                            <h4 className="flex items-center">
-                                Price:  {product?.price ? 
-                                            <p className="font-bold text-[20px] ml-2">₱{(product?.price /100).toFixed(2)}</p>
-                                        :
-                                            null
-                                        }
-                            </h4>
+                            <div>
+                                <h4 className="flex items-center">
+                                    Price:  {product?.price ? 
+                                                <p className="font-bold text-[20px] ml-2">₱{(product?.price /1).toFixed(2)}</p>
+                                            :
+                                                null
+                                            }
+                                </h4>
+                                <p className="text-gray-500">
+                                    <span className="line-through">₱{((product?.price * 1.10) / 1).toFixed(2)}</span>
+                                    <span className="px-2">-</span>
+                                    <span className="line-through">10%</span>
+                                </p>
+                            </div>
 
                             <button className="bg-[#3498c9] text-white py-2 px-20 rounded-full cursor-pointer">
                                 Add To Cart

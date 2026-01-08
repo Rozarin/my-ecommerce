@@ -12,19 +12,19 @@ export default function ProductCard({ product }) {
                 { product?.img_url ? <img className="rounded cursor-pointer" src={product.img_url+'/190'} /> : null}
 
                 <div className="pt-2 px-1">
-                    
+
                     <h3 className="font-semibold text-[15px] hover:underline cursor-pointer">
                         {product.title}
                     </h3>
 
-                    <h4 className="font-extrabold">₱{(product?.price /100).toFixed(2)}</h4>
+                    <h4 className="font-extrabold">₱{(product?.price / 1).toFixed(2)}</h4>
 
                     <div className="relative flex items-center text-[12px] text-gray-500">
-                        <h4>
-                            <span className="line-through">₱{(product?.price * 1.10).toFixed(2)}</span>
+                        <p>
+                            <span className="line-through">₱{((product?.price * 1.10) / 1).toFixed(2)}</span>
                             <span className="px-2">-</span>
                             <span className="line-through">10%</span>
-                        </h4>
+                        </p>
                     </div>
 
                 </div>
