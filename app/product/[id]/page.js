@@ -1,13 +1,18 @@
 "use client"
 
 import { useParams } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 import products from "@/db/products-db";
+import { addToCart } from "@/db/cart-db";
 import DisplayProducts from "@/app/components/DisplayProducts";
 import MainLayout from "../../layouts/MainLayout"
 
 export default function Product() {
 
     const { id } = useParams();
+    const [loading, setLoading] = useState(false);
 
     const product = products.find(
         (item) => item.id === Number(id)
@@ -21,9 +26,25 @@ export default function Product() {
         );
     }
 
+    const handleAddToCart = () => {
+        try {
+        setLoading(true);
+
+        // simulate API delay
+        setTimeout(() => {
+            addToCart(product);
+            toast.success("Added to cart successfully 🛒");
+            setLoading(false);
+        }, 800);
+        } catch (error) {
+            toast.error("Failed to add to cart ❌");
+            setLoading(false);
+        }
+    };
+
     return (
         <MainLayout>
-            <div className="flex px-4 py-10 mt-10">
+            <div className="flex px-4 py-5 mt-15">
 
                 {product?.img_url ?
                     <img className="w-[40%] rounded-lg" src={product.img_url+'/280'} /> 
@@ -50,20 +71,26 @@ export default function Product() {
                             <div>
                                 <h4 className="flex items-center">
                                     Price:  {product?.price ? 
-                                                <p className="font-bold text-[20px] ml-2">₱{(product?.price /1).toFixed(2)}</p>
+                                                <p className="font-bold text-[20px] ml-2">₱{product?.price.toFixed(2)}</p>
                                             :
                                                 null
                                             }
                                 </h4>
                                 <p className="text-gray-500">
-                                    <span className="line-through">₱{((product?.price * 1.10) / 1).toFixed(2)}</span>
+                                    <span className="line-through">₱{(product?.price * 1.10).toFixed(2)}</span>
                                     <span className="px-2">-</span>
                                     <span className="line-through">10%</span>
                                 </p>
                             </div>
 
-                            <button className="bg-[#3498c9] text-white py-2 px-20 rounded-full cursor-pointer">
-                                Add To Cart
+                            <button
+                                onClick={handleAddToCart}
+                                disabled={loading}
+                                className={`py-2 px-20 rounded-full text-white transition
+                                    ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 cursor-pointer hover:bg-blue-600"}`
+                                }
+                            >
+                                {loading ? "Adding..." : "Add To Cart"}
                             </button>
                         </div>
                     </div>
@@ -78,6 +105,8 @@ export default function Product() {
                 </div>
 
             </div>
+
+            <div className="border-b border-gray-200 py-1" />
 
             <h2 className="text-2xl font-bold mt-4 mb-6 px-4">Other items you may like</h2>
             <DisplayProducts />

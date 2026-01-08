@@ -1,4 +1,4 @@
-const user = {
+const userdetails = {
     name: "",
     username: "",
     password: "",

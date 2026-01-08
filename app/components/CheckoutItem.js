@@ -14,13 +14,17 @@ export default function CheckoutItem({ product }) {
                 <div className="overflow-hidden pl-2">
 
                     <h3 className="font-semibold">{product.title}</h3>
-                    <h4 className="text-lg font-semibold">₱{(product?.price /100).toFixed(2)}</h4>
+                    <h4 className="text-lg font-semibold">₱{product?.price.toFixed(2)}</h4>
 
                     <div className="relative flex items-center text-[14px] text-gray-500">
-                        <p className="line-through">₱{((product?.price * 1.1) /100).toFixed(2)}</p>
+                        <p className="line-through">₱{(product?.price * 1.1).toFixed(2)}</p>
                         <p className="px-2">-</p>
                         <p className="line-through">10%</p>
                     </div>
+
+                    <p className="text-sm">
+                        Quantity: <span className="font-semibold">{product.quantity}</span>
+                    </p>
 
                     <p className="text-sm mt-2">
                         {product.description.substring(0, 130)}...

@@ -1,10 +1,30 @@
 "use client"
 
-import Link from "next/link"
-import { BsChevronDown } from "react-icons/bs"
-import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai"
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { BsChevronDown } from "react-icons/bs";
+import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
 
 export default function Header() {
+
+    const [cartItems, setCartItems] = useState([]);
+
+    const syncCart = () => {
+        const items = JSON.parse(localStorage.getItem("cart_items")) || [];
+        setCartItems(items);
+    };
+
+    useEffect(() => {
+        syncCart();
+        window.addEventListener("cartUpdated", syncCart);
+        return () => window.removeEventListener("cartUpdated", syncCart);
+    }, []);
+
+    const itemsCount = cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
+
     return (
         <>
             <div id="Header" className="fixed w-full top-0 border-b bg-white text-[12px] text-[#333333] py-2 px-5 z-40">
@@ -38,9 +58,11 @@ export default function Header() {
                         <li className="px-3 hover:underline cursor-pointer">
                             <Link href={"/cart"} className="relative">
                                 <AiOutlineShoppingCart size={22} />
-                                <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                    <div className="flex items-center justify-center -mt-[1px]">2</div>
-                                </div>
+                                {itemsCount !== 0 &&
+                                    <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                                        <div className="flex items-center justify-center -mt-[1px]">{itemsCount}</div>
+                                    </div>
+                                }
                             </Link>
                         </li>
 
