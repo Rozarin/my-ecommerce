@@ -44,7 +44,7 @@ export default function Product() {
 
     return (
         <MainLayout>
-            <div className="flex px-4 py-5 mt-15">
+            <div className="flex px-4 py-5 mt-20">
 
                 {product?.img_url ?
                     <img className="w-[40%] rounded-lg" src={product.img_url+'/280'} /> 

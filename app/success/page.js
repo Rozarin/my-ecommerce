@@ -9,7 +9,7 @@ export default function Success() {
     return(
         <>
             <MainLayout>
-                <div id="SuccessPage" className="w-full mt-12 px-2 min-h-[50vh]">
+                <div id="SuccessPage" className="w-full mt-20 px-2 min-h-[50vh]">
                     <div className="bg-white w-full p-6 min-h-[150px] flex items-center justify-center">
                         <div>
                             <div className="flex items-center text-xl">

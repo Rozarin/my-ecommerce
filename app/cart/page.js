@@ -33,7 +33,7 @@ export default function Cart() {
         <>
             <MainLayout>
 
-                <div className="w-full mt-15">
+                <div className="w-full mt-20">
                     <h2 className="text-2xl font-bold my-4">Shopping Cart</h2>
                     <div className="relative flex items-baseline justify-between gap-2">
 

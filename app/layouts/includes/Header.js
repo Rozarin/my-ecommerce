@@ -1,13 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { BsChevronDown } from "react-icons/bs";
 import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
+import products from "@/db/products-db";
 
 export default function Header() {
 
     const [cartItems, setCartItems] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [showResults, setShowResults] = useState(false);
+
+    const searchRef = useRef(null);
 
     const syncCart = () => {
         const items = JSON.parse(localStorage.getItem("cart_items")) || [];
@@ -20,36 +25,93 @@ export default function Header() {
         return () => window.removeEventListener("cartUpdated", syncCart);
     }, []);
 
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+        if (searchRef.current && !searchRef.current.contains(e.target)) {
+            setShowResults(false);
+        }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     const itemsCount = cartItems.reduce(
         (total, item) => total + item.quantity,
         0
     );
 
+    const filteredProducts = products.filter(product =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    ).slice(0, 6); // limit results
+
     return (
         <>
-            <div id="Header" className="fixed w-full top-0 border-b bg-white text-[12px] text-[#333333] py-2 px-5 z-40">
+            <div id="Header" className="fixed w-full top-0 border-b bg-white text-base font-semibold text-[#333333] py-4 px-5 z-40">
 
-                <div className="w-full flex items-center justify-between mx-auto">
+                <div className="max-w-[1200px] mx-auto w-full flex items-center justify-between mx-auto">
                     <div
                         id="HeaderLeft"
                         className="flex items-center px-2 h-8"
-                    ></div>
-
-                    <div
-                        id="HeaderCenter"
-                        className="flex items-center px-2 h-8"
                     >
-                        <div className="relative min-w-[500px] flex items-center border-2 rounded-full border-gray-900 p-1">
-                            <button className="flex items-center">
-                                <AiOutlineSearch size={22} />
-                            </button>
-                            <input 
-                                className="w-full placeholder-gray-400 pl-3 focus:outline-none"
-                                placeholder="Search products"
-                                type="text"
-                            />
-                        </div>
+                        <Link href={"/"}>
+                            <div className="h-10 bg-cover flex items-center gap-3">
+                                <img src="/logo.png" className="w-10 h-10" />
+                                <h1 className="font-bold text-2xl">Hardware Fanatics</h1>
+                            </div>
+                        </Link>
                     </div>
+
+                <div ref={searchRef} className="relative min-w-[500px]">
+                    <div className="flex items-center border-2 rounded-full border-gray-900 p-2">
+                        <AiOutlineSearch size={22} />
+                        <input
+                        value={searchTerm}
+                        onChange={(e) => {
+                            setSearchTerm(e.target.value);
+                            setShowResults(true);
+                        }}
+                        className="w-full pl-3 focus:outline-none"
+                        placeholder="Search products"
+                        type="text"
+                        />
+                    </div>
+
+                    {showResults && searchTerm && (
+                        <div id="HeaderCenter" className="absolute top-12 left-0 w-full bg-white border rounded-lg shadow-lg z-50 max-h-[350px] overflow-y-auto">
+                            {filteredProducts.length === 0 ? (
+                                <p className="p-4 text-sm text-gray-500">
+                                    No products found
+                                </p>
+                                ) : (
+                                    filteredProducts.map(product => (
+                                    <Link
+                                        key={product.id}
+                                        href={`/product/${product.id}`}
+                                        onClick={() => {
+                                        setShowResults(false);
+                                        setSearchTerm("");
+                                        }}
+                                        className="flex items-center gap-3 p-3 hover:bg-gray-100"
+                                    >
+                                        <img
+                                            src={product.img_url + "/80"}
+                                            className="w-12 h-12 rounded-md object-cover"
+                                        />
+                                        <div className="flex-1">
+                                            <p className="text-sm font-medium">
+                                                {product.title}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                ₱{product.price.toFixed(2)}
+                                            </p>
+                                        </div>
+                                    </Link>
+                                ))
+                            )}
+                        </div>
+                    )}
+                </div>
                     
                     <ul 
                         id="HeaderRight"

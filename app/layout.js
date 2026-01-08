@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css"
 
 export const metadata = {
   title: "Hardware Fanatics",
-  description: "Footware Fanatics",
+  description: "Hardware Fanatics",
 };
 
 export default function RootLayout({ children }) {

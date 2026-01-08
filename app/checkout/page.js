@@ -43,7 +43,7 @@ export default function Checkout() {
         <>
             <MainLayout>
 
-                <div id="CheckoutPage" className="mt-15">
+                <div id="CheckoutPage" className="mt-20">
                     <h2 className="text-2xl font-bold my-4">Checkout</h2>
                     <div className="relative flex items-baseline gap-4 justify-between mx-auto w-full">
 
@@ -110,7 +110,7 @@ export default function Checkout() {
                             </div>
                             
                             <div className="flex items-center justify-center p-4 gap-2 border-t border-gray-200 ">
-                                <img width={50}  />
+                                <img src="/logo.png" className="w-10 h-10" />
                                 <p className="font-light my-2">MONEY BACK GUARANTEE</p>
                             </div>
 
