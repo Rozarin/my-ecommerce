@@ -8,4 +8,4 @@ const userdetails = {
     country: "",
 }
 
-export default user;
+export default userdetails;
