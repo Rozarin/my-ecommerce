@@ -1,5 +1,6 @@
 "use client"
 
+import { useMemo } from "react";
 import products from "@/db/products-db"
 import ProductCard from "./ProductCard"
 
